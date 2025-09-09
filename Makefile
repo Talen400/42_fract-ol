@@ -34,8 +34,8 @@ $(OBJ_F):
 	mkdir $@
 
 $(MLX):
-	@echo "\n$(YELLOW)> Compilando MinilibX...$(RESET)"
-	$(MAKE) -C $(MLX_DIR)
+	@echo "\n$(YELLOW)> Compilation MinilibX...$(RESET)"
+	make -C $(MLX_DIR)
 
 $(LIBFT):
 	@echo "\n$(YELLOW)> Compilation libft...$(YELLOW)"
