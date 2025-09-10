@@ -1,49 +1,55 @@
-// Written by Bruh
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/10 03:09:20 by tlavared          #+#    #+#             */
+/*   Updated: 2025/09/10 03:09:22 by tlavared         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../fractol.h"
-#include <stdio.h>
 
-#define WIDTH 256
-#define HEIGHT 25
+static void	ft_keyhook(mlx_key_data_t keydata, void *param);
 
-// Exit the program as failure.
-static void ft_error(void)
+static void	ft_keyhook(mlx_key_data_t keydata, void *param)
 {
-	fprintf(stderr, "%s", mlx_strerror(mlx_errno));
-	exit(EXIT_FAILURE);
+	mlx_t	*mlx;
+
+	mlx = (mlx_t *)param;
+	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
+		mlx_close_window(mlx);
 }
 
-// Print the window width and height.
-static void ft_hook(void* param)
+int	main(void)
 {
-	const mlx_t* mlx = param;
+	mlx_t		*mlx;
+	mlx_image_t	*img;
 
-	printf("WIDTH: %d | HEIGHT: %d\n", mlx->width, mlx->height);
-}
-
-int32_t	main(void)
-{
-
-	// MLX allows you to define its core behaviour before startup.
-	mlx_set_setting(MLX_MAXIMIZED, true);
-	mlx_t* mlx = mlx_init(WIDTH, HEIGHT, "42Balls", true);
+	mlx = mlx_init(WIDTH, HEIGHT, "fract-ol", true);
 	if (!mlx)
-		ft_error();
-
-	/* Do stuff */
-
-	// Create and display the image.
-	mlx_image_t* img = mlx_new_image(mlx, 256, 256);
-	if (!img || (mlx_image_to_window(mlx, img, 0, 0) < 0))
-		ft_error();
-
-	// Even after the image is being displayed, we can still modify the buffer.
-	mlx_put_pixel(img, 0, 0, 0xFF0000FF);
-
-	// Register a hook and pass mlx as an optional param.
-	// NOTE: Do this before calling mlx_loop!
-	mlx_loop_hook(mlx, ft_hook, mlx);
+	{
+		ft_printf("Error: Failed to initialize MLX42\n");
+		return (1);
+	}
+	img = mlx_new_image(mlx, WIDTH, HEIGHT);
+	if (!img)
+	{
+		mlx_terminate(mlx);
+		return (1);
+	}
+	ft_clear(img);
+	// fractal..
+	if (mlx_image_to_window(mlx, img, 0, 0) == -1)
+	{
+		mlx_delete_image(mlx, img);
+		mlx_terminate(mlx);
+		return (1);
+	}
+	mlx_key_hook(mlx, &ft_keyhook, mlx);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
-	return (EXIT_SUCCESS);
+	return (0);
 }
