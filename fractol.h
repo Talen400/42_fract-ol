@@ -5,10 +5,7 @@
 # include "MLX42/include/MLX42/MLX42.h"
 # include <math.h>
 
-# include <stdlib.h>
-# include <stdio.h>
 # include <math.h>
-# include <time.h>
 
 # define WIDTH 800
 # define HEIGHT 640
