@@ -10,7 +10,18 @@
 # define WIDTH 800
 # define HEIGHT 640
 
-void	ft_drawbuffer(mlx_image_t *img, int x, int y, uint32_t color);
-void	ft_clear(mlx_image_t *img);
+typedef struct s_line
+{
+	mlx_t		*mlx;
+	mlx_image_t	*img;
+	uint32_t	*pixels;
+	double		a, b, c, d;
+	int			mode;
+} t_sine;
 
+void	ft_drawbuffer(mlx_image_t *img, int x, int y, uint32_t color);
+void	ft_keyhook(mlx_key_data_t keydata, void *param);
+int	ft_errorinit(mlx_t *mlx);
+int	ft_errorimg(mlx_t *mlx, mlx_image_t *img);
+void	ft_clearimg(t_sine *s);
 #endif
