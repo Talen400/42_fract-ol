@@ -6,24 +6,51 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 03:09:20 by tlavared          #+#    #+#             */
-/*   Updated: 2025/09/11 22:30:30 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/09/12 17:47:13 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fractol.h"
-/**
+
 static inline void	ft_put(uint32_t *pixels, int x, int y,
 		uint32_t color)
 {
 	if (x >= 0 && x < WIDTH && y >= 0 && y <= HEIGHT)
 		pixels[y * WIDTH + x] = color;
 }
-**/
+
+void	ft_line(uint32_t *pixels, int x1, int y1, int x2, int y2, uint32_t color)
+{
+    int dx = x2 - x1;
+    int dy = y2 - y1;
+    int steps;
+
+    if (dx > dy)
+        steps = dx;
+    else
+        steps = dy;
+
+    if (steps < 0)
+        steps = -steps;
+    if (steps == 0)
+        return;
+    float x_inc = (float)dx / steps;
+    float y_inc = (float)dy / steps;
+    float x = x1, y = y1;
+    int i = -1;
+    while (++i <= steps)
+    {
+        ft_put(pixels, (int)x, (int)y, color);
+        x += x_inc;
+        y += y_inc;
+    }
+}
 
 void	ft_draw(t_sine	*s)
 {
 	int		x;
 	int		y;
+	int		prev_y;
 	double	math_x;
 	double	math_y;
 
@@ -33,21 +60,18 @@ void	ft_draw(t_sine	*s)
 		s->pixels[HALF_HEIGHT * WIDTH + x] = 0x404040FF;
 	y = -1;
 	while (++y < HEIGHT)
-		s->pixels[y * WIDTH + HALF_WIDTH] = 0x404040FF;
-	x = -1;
+		s->pixels[y * WIDTH + HALF_WIDTH] = 0x404040FF;	
+	x = 0;
+    math_x = (x - HALF_WIDTH) * 3.141592 / 100.0;
+    math_y = s->a * sin(s->b * math_x + s->c) + s->d;
+    prev_y = HALF_HEIGHT - (int)(math_y * 50.0);
 	while (++x < WIDTH)
 	{
-		math_x = (x - HALF_WIDTH) * 3 / 100.0;
-		math_y = s->a * sin(s->b * math_x + s->c);
+		math_x = (x - HALF_WIDTH) * 3.141592 / 100.0;
+		math_y = s->a * sin(s->b * math_x + s->c) + s->d;
 		y = HALF_HEIGHT - (int)(math_y * 50.0);
-		if (y >= 0 && y < HEIGHT)
-		{
-			s->pixels[y * WIDTH + x] = 0x00FF00FF;
-			if (y > 0)
-				s->pixels[(y - 1) * WIDTH + x] = 0x00FF00FF;
-			if (y < HEIGHT - 1)
-				s->pixels[(y + 1) * WIDTH + x] = 0x00FF00FF;
-		}
+		ft_line(s->pixels, x - 1, prev_y, x, y, 0x00FF00FF);
+		prev_y = y;
 	}
 }
 
