@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 02:41:00 by tlavared          #+#    #+#             */
-/*   Updated: 2025/09/11 17:30:19 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/09/11 21:35:40 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,6 @@ void	ft_drawbuffer(mlx_image_t *img, int x, int y, uint32_t color)
 {
 	if (x >= 0 && x <= (int)img->width && y >= 0 && y < (int)img->height)
 		*((uint32_t *)(img->pixels + (y * img->width + x) * 4)) = color;
-}
-
-void	ft_keyhook(mlx_key_data_t keydata, void *param)
-{
-	mlx_t	*mlx;
-
-	mlx = (mlx_t *)param;
-	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
-		mlx_close_window(mlx);
 }
 
 int	ft_errorinit(mlx_t *mlx)

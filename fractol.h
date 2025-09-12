@@ -9,6 +9,8 @@
 
 # define WIDTH 800
 # define HEIGHT 640
+# define HALF_WIDTH (WIDTH / 2)
+# define HALF_HEIGHT (HEIGHT / 2)
 
 typedef struct s_line
 {
@@ -19,9 +21,11 @@ typedef struct s_line
 	int			mode;
 } t_sine;
 
+void	ft_draw(t_sine	*s);
 void	ft_drawbuffer(mlx_image_t *img, int x, int y, uint32_t color);
 void	ft_keyhook(mlx_key_data_t keydata, void *param);
 int	ft_errorinit(mlx_t *mlx);
 int	ft_errorimg(mlx_t *mlx, mlx_image_t *img);
 void	ft_clearimg(t_sine *s);
+void	ft_scrollhook(double xd, double yd, void *param);
 #endif
