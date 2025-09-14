@@ -8,24 +8,27 @@
 # include <math.h>
 
 # define WIDTH 800
-# define HEIGHT 640
+# define HEIGHT 600
 # define HALF_WIDTH (WIDTH / 2)
 # define HALF_HEIGHT (HEIGHT / 2)
 
-typedef struct s_line
+typedef struct s_fractol
 {
 	mlx_t		*mlx;
 	mlx_image_t	*img;
 	uint32_t	*pixels;
-	double		a, b, c, d;
-	int			mode;
-} t_sine;
+} t_fractol;
 
-void	ft_draw(t_sine	*s);
-void	ft_drawbuffer(mlx_image_t *img, int x, int y, uint32_t color);
+typedef struct s_complex
+{
+	float	real;
+	float	img;
+} t_complex;
+
+void	ft_draw(t_fractol	*f);
 void	ft_keyhook(mlx_key_data_t keydata, void *param);
 int	ft_errorinit(mlx_t *mlx);
 int	ft_errorimg(mlx_t *mlx, mlx_image_t *img);
-void	ft_clearimg(t_sine *s);
+void	ft_clearimg(t_fractol *f);
 void	ft_scrollhook(double xd, double yd, void *param);
 #endif
